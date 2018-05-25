@@ -15,14 +15,14 @@ mvn -DskipTests clean verify
 Next we will execute the SureFire plugin to run our unit tests. But we also need to execute the JaCoCo plugin which will determine test coverage and generate the coverage report.
 
 ```
-mvn jacoco:prepare-agent surefire:test jacoco:report
+mvn jacoco:prepare-agent@preTest surefire:test jacoco:report@postTest
 ```
 
 ### Integration Test
 To run integration tests, we’ll spin up a local server and deploy the project. The server is configured to measure test coverage, and the FailSafe plugin is used to run the tests. Tests make calls to the server and then validate its responses. After the tests have run, coverage information is dumped, the server is stopped, and a coverage report is generated. When the integration test server starts, our WAR project should connect to resources (databases and services) in a static development environment.
 
 ```
-mvn jacoco:prepare-agent-integration cargo:start failsafe:integration-test jacoco:dump cargo:stop jacoco:report-integration
+mvn jacoco:prepare-agent-integration@preIT failsafe:integration-test jacoco:report-integration@postIT failsafe:verify
 ```
 
 ### Code Analysis
